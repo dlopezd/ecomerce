@@ -20,7 +20,7 @@ const NavBar = props => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6" className={classes.title}>
-                    Random Users
+                    E-Commerce Amiibo
                     </Typography>
             </Toolbar>
         </AppBar>

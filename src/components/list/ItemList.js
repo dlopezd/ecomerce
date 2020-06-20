@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom'
 
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -12,50 +11,74 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        width: 350,
+        width: 180,
         margin: 8,
+        padding: 8
     },
     details: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
     },
     content: {
-        flex: '1 0 auto',
+        padding: '16px 0 0 0'
     },
     cover: {
-        width: 120,
-        height:120
+        height: 180,
+        width: 'auto',
+        backgroundSize: 'contain'
     },
     button: {
         paddingTop: 0,
         paddingBottom: 0
+    },
+    title: {
+        fontSize: '16px',
+        lineHeight: '18px',
+        fontStyle: 'bold'
+    },
+    subtitle: {
+        fontSize: '13px',
+        fontSize: '15px'
+    },
+    price:{
+        marginTop: '5px',
+        color: '#dc004e'
     }
 }));
 
 const ItemList = props => {
     const classes = useStyles();
-    const user = props.user;
+    const amiibo = props.amiibo;
+    const formatter = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+    });
 
     return (
         <Card className={classes.root}>
-            <CardActionArea onClick={_=>{
-                props.history.push({
-                    pathname: `user/${user.login.uuid}`,
-                    state:user
-                })
-            }}>
+            <CardActionArea
+            // onClick={_ => {
+            //     props.history.push({
+            //         pathname: `user/${user.login.uuid}`,
+            //         state: user
+            //     })
+            // }}
+            >
                 <div className={classes.details}>
                     <CardMedia
                         className={classes.cover}
-                        image={user.picture.large}
+                        image={amiibo.image}
                         title="picture"
                     />
                     <CardContent className={classes.content}>
-                        <Typography component="h6" variant="h6">
-                            {user.name.first} {user.name.last}
+                        <Typography className={classes.title}>
+                            <strong>{amiibo.name}</strong>
                         </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                            {user.location.country}
+                        <Typography className={classes.subtitle}>
+                            {amiibo.type}
+                        </Typography>
+                        <Typography className={classes.price}>
+                            <strong>{ formatter.format(amiibo.price) }</strong>
                         </Typography>
                     </CardContent>
                 </div>

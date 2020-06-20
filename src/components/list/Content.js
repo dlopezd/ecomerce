@@ -3,30 +3,84 @@ import { connect } from 'react-redux'
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Pagination from '@material-ui/lab/Pagination';
 
 import Error from '../Error'
 import Loader from '../Loader'
+import ItemList from './ItemList'
 import { fetchAmiibos } from '../../redux/amiibo/ActionCreators'
 
-class Content extends React.Component {
+const styles = {
+    pagination : {
+        margin: '20px 0',
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    container: {
+        marginTop: '20px',
+    }
+}
 
-    componentDidMount(){
-        this.props.fetchAmiibos();
+class Content extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            page: 1
+        };
+
+        this.handlePageChange = this.handlePageChange.bind(this);
     }
 
-    render () {
+
+    componentDidMount() {
+        this.props.fetchAmiibos();
+        var currentPage = this.props.page ? this.props.page : 1;
+        this.setState({ ...this.state, page: currentPage });
+    }
+
+    handlePageChange = (event, value) => {
+        event.preventDefault();
+        this.setState({ ...this.state, page: value });
+    };
+
+
+    render() {
+        const amiiboState = this.props.amiiboState;
+        const itemPerPage = 20;
         return (
-            this.props.amiiboState.isLoading ? <Loader /> :
-            this.props.amiiboState.ErrMess ? <Error msg={this.props.amiiboState.ErrMess} /> :
-            <Container style={{marginTop: '20px'}}>
-                <Grid container style={{flexGrow: 1}} spacing={2}>
-                    <Grid item >
-                        <Grid container justify="space-around" spacing={2}>
-                        
+            amiiboState.isLoading ? <Loader /> :
+                amiiboState.ErrMess ? <Error msg={amiiboState.ErrMess} /> :
+                    <Container style={styles.container}>
+                        <Pagination
+                            style={styles.pagination}
+                            color="primary"
+                            count={Math.ceil(amiiboState.amiibos.length / itemPerPage)}
+                            page={this.state.page}
+                            onChange={this.handlePageChange} />
+                        <Grid container style={{ flexGrow: 1 }} spacing={2}>
+                            <Grid item >
+                                <Grid container justify="space-around" spacing={2}>
+                                    {
+                                        amiiboState.amiibos
+                                            .slice((this.state.page - 1) * itemPerPage, (this.state.page - 1) * itemPerPage + itemPerPage)
+                                            .map(a => {
+                                                return (
+                                                    <ItemList
+                                                        key={a.tail}
+                                                        amiibo={a} />
+                                                )
+                                            })
+                                    }
+                                </Grid>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Grid>
-            </Container>
+                        <Pagination
+                            style={styles.pagination}
+                            color="primary"
+                            count={Math.ceil(amiiboState.amiibos.length / itemPerPage)}
+                            page={this.state.page}
+                            onChange={this.handlePageChange} />
+                    </Container>
         );
     }
 }
@@ -34,7 +88,7 @@ class Content extends React.Component {
 const mapStateToProps = state => ({
     amiiboState: state.amiiboState
 });
-  
+
 const mapDispatchToProps = dispatch => ({
     fetchAmiibos: _ => dispatch(fetchAmiibos())
 });
