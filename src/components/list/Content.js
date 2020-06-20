@@ -1,39 +1,42 @@
-import React, { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
+import React from 'react'
+import { connect } from 'react-redux'
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 
 import Error from '../Error'
 import Loader from '../Loader'
+import { fetchAmiibos } from '../../redux/amiibo/ActionCreators'
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        marginTop: 20
-    },
-    griptop: {
-        flexGrow: 1,
+class Content extends React.Component {
+
+    componentDidMount(){
+        this.props.fetchAmiibos();
     }
-}));
 
-const Content = props => {
-    const [spacing, setSpacing] = useState(2);
-    const classes = useStyles();
-
-    return (
-        // isLoading ? <Loader /> :
-            // error ? <Error msg="Error al cargar la información." /> :
-                <Container className={classes.container}>
-                    <Grid container className={classes.griptop} spacing={2}>
-                        <Grid item >
-                            <Grid container justify="space-around" spacing={spacing}>
-                               
-                            </Grid>
+    render () {
+        return (
+            this.props.amiiboState.isLoading ? <Loader /> :
+            this.props.amiiboState.ErrMess ? <Error msg={this.props.amiiboState.ErrMess} /> :
+            <Container style={{marginTop: '20px'}}>
+                <Grid container style={{flexGrow: 1}} spacing={2}>
+                    <Grid item >
+                        <Grid container justify="space-around" spacing={2}>
+                        
                         </Grid>
                     </Grid>
-                </Container>
-    );
+                </Grid>
+            </Container>
+        );
+    }
 }
 
-export default Content;
+const mapStateToProps = state => ({
+    amiiboState: state.amiiboState
+});
+  
+const mapDispatchToProps = dispatch => ({
+    fetchAmiibos: _ => dispatch(fetchAmiibos())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

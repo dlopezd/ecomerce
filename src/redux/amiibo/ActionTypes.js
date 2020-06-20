@@ -1,0 +1,3 @@
+export const AMIIBO_FETCHED = 'AMIIBO_FETCHED';
+export const AMIIBO_LOADING = 'AMIIBO_LOADING';
+export const AMIIBO_FAILED = 'AMIIBO_FAILED';
