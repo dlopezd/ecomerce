@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom'
 
+import { currencyFormatter } from '../../Utils/Utils'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -38,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
     },
     subtitle: {
         fontSize: '13px',
-        fontSize: '15px'
+        lineHeight: '15px'
     },
-    price:{
+    price: {
         marginTop: '5px',
         color: '#dc004e'
     }
@@ -49,10 +51,6 @@ const useStyles = makeStyles((theme) => ({
 const ItemList = props => {
     const classes = useStyles();
     const amiibo = props.amiibo;
-    const formatter = new Intl.NumberFormat('es-CL', {
-        style: 'currency',
-        currency: 'CLP',
-    });
 
     return (
         <Card className={classes.root}>
@@ -78,7 +76,7 @@ const ItemList = props => {
                             {amiibo.type}
                         </Typography>
                         <Typography className={classes.price}>
-                            <strong>{ formatter.format(amiibo.price) }</strong>
+                            <strong>{currencyFormatter.format(amiibo.price)}</strong>
                         </Typography>
                     </CardContent>
                 </div>

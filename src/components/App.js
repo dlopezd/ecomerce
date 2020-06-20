@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom'
 
-
-import Content from './list/Content'
 import NavBar from './NavBar'
+import SearchResult from './SearchResult';
 
 const App = _ => {
 
@@ -11,7 +10,7 @@ const App = _ => {
     <>
       <NavBar />
       <Switch>
-        <Route exact path='/' component={Content} />
+        <Route exact path='/' component={SearchResult} />
       </Switch>
     </>
   );
