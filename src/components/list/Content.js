@@ -85,10 +85,10 @@ class Content extends React.Component {
                         <Select
                             value={this.state.orderBy}
                             onChange={this.handleOrderChange} >
-                            <MenuItem value="name-asc">Nombre ascendiente</MenuItem>
-                            <MenuItem value="name-desc">Nombre descendiente</MenuItem>
-                            <MenuItem value="price-asc">Precio ascendiente</MenuItem>
-                            <MenuItem value="price-desc">Precio descendiente</MenuItem>
+                            <MenuItem value="name-asc">Nombre a - z</MenuItem>
+                            <MenuItem value="name-desc">Nombre z - a </MenuItem>
+                            <MenuItem value="price-asc">Precio ascendente</MenuItem>
+                            <MenuItem value="price-desc">Precio descendente</MenuItem>
                         </Select>
                     </FormControl>
 

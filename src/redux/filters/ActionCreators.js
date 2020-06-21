@@ -12,9 +12,16 @@ export const setTypeFilters = types => (dispatch) => {
 	});
 	dispatch(setTypesState(typesOptions))
 }
+
 export const updateTypeFilters = (key, value) => (dispatch) => {
 	dispatch(updateTypeOption(key, value));
 }
+
+export const setSearchText = searchText => dispatch => {
+	dispatch(setSearchTextState(searchText));
+} 
+
+
 
 const setMinMaxState = data => ({
 	type: ActionTypes.SET_MIN_MAX,
@@ -23,6 +30,11 @@ const setMinMaxState = data => ({
 
 const setTypesState = (data) => ({
 	type: ActionTypes.SET_TYPES,
+	payload: data
+});
+
+const setSearchTextState = (data) => ({
+	type: ActionTypes.SET_SEARCH_TEXT,
 	payload: data
 });
 
