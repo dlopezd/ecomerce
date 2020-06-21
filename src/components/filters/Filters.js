@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 import { updateTypeFilters, setMinMaxFilters } from '../../redux/filters/ActionCreators'
 import TypeFilter from './TypeFilter';
@@ -34,32 +35,34 @@ class Filters extends React.Component {
 
     render() {
         return (
-            <Container style={styles.container}>
-                <Grid container style={{ flexGrow: 1 }} spacing={2}>
-                    <Grid item>
-                        <TypeFilter
-                            typeOptions={this.props.filterState.typeOptions}
-                            handleTypeChanges={this.handleTypeChanges} />
+            // <Paper elevation={3}>
+                <Container style={styles.container}>
+                    <Grid container style={{ flexGrow: 1 }} spacing={2}>
+                        <Grid item>
+                            <TypeFilter
+                                typeOptions={this.props.filterState.typeOptions}
+                                handleTypeChanges={this.handleTypeChanges} />
+                        </Grid>
+                        <Grid item>
+                            <PriceFilter
+                                minPrice={this.props.filterState.minPrice}
+                                maxPrice={this.props.filterState.maxPrice}
+                                handlePriceChanges={this.handlePriceChanges} />
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <PriceFilter
-                            minPrice={this.props.filterState.minPrice}
-                            maxPrice={this.props.filterState.maxPrice}
-                            handlePriceChanges={this.handlePriceChanges} />
-                    </Grid>
-                </Grid>
-            </Container>
-        );
-    }
-}
-
+                </Container>
+                // </Paper>
+                );
+            }
+        }
+        
 const mapStateToProps = state => ({
-    filterState: state.filterState
-});
-
+                    filterState: state.filterState
+            });
+            
 const mapDispatchToProps = dispatch => ({
-    updateTypeFilters: (key, value) => dispatch(updateTypeFilters(key, value)),
-    setMinMaxFilters: (min, max) => dispatch(setMinMaxFilters({ min: min, max: max }))
-});
-
+                    updateTypeFilters: (key, value) => dispatch(updateTypeFilters(key, value)),
+    setMinMaxFilters: (min, max) => dispatch(setMinMaxFilters({min: min, max: max }))
+            });
+            
 export default connect(mapStateToProps, mapDispatchToProps)(Filters);

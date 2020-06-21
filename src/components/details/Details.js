@@ -3,33 +3,48 @@ import { withRouter } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Container from '@material-ui/core/Container';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Error from '../Error'
 import Loader from '../Loader'
 import { fetchAmiibo } from '../../redux/amiibo_detail/ActionCreators'
+import { addItemCart } from '../../redux/shopping_cart/ActionCreators'
 import { currencyFormatter } from '../../Utils/Utils'
 
 
 const useStyles = makeStyles((theme) => ({
+    paper: {
+        margin: '20px',
+    },
     container: {
-        marginTop: '20px',
+        padding: '20px',
         display: 'flex',
         flexDirection: 'row'
     },
-    filters: {
-        width: 320
+    image: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    price: {
+        marginTop: '20px',
+        color: '#dc004e'
+    },
+    quantity: {
+        maxWidth: '80px',
+        marginRight: 10
     }
 }));
 
 const Details = props => {
     const classes = useStyles();
     const [amiibo, setAmiibo] = useState(undefined);
+    const [quantity, setQuantity] = useState(1);
     const amiiboState = useSelector(state => state.amiiboDetailState);
     const dispatch = useDispatch();
 
@@ -45,35 +60,66 @@ const Details = props => {
         }
     }, [amiiboState]);
 
-    !amiibo &&  props.history.location.state &&
+
+    const handleAddToCart = event => {
+        event.preventDefault();
+        dispatch(addItemCart({...amiibo, quantity: quantity}))
+    }
+
+    !amiibo && props.history.location.state &&
         setAmiibo(props.history.location.state);
 
     return (
         amiibo ? (
-            <Container className={classes.container}>
-                <Card className={classes.root}>
-                    <CardActionArea>
-                        <div className={classes.details}>
-                            <CardMedia
-                                className={classes.cover}
-                                image={amiibo.image}
-                                title="picture"
-                            />
-                            <CardContent className={classes.content}>
-                                <Typography className={classes.title}>
-                                    <strong>{amiibo.name}</strong>
-                                </Typography>
-                                <Typography className={classes.subtitle}>
-                                    {amiibo.type}
-                                </Typography>
-                                <Typography className={classes.price}>
-                                    <strong>{currencyFormatter.format(amiibo.price)}</strong>
-                                </Typography>
-                            </CardContent>
-                        </div>
-                    </CardActionArea>
-                </Card>
-            </Container>
+            <Paper elevation={0} className={classes.paper}>
+                <Container className={classes.container}>
+                    <Grid container style={{ flexGrow: 1 }} spacing={2}>
+                        <Grid item className={classes.image} style={{ flexGrow: 1 }}>
+                            <img width="200" src={amiibo.image} />
+                        </Grid>
+                        <Grid item style={{ flexGrow: 1 }}>
+                            <Typography variant="h6">{amiibo.name}</Typography>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Rating name="read-only" value={0} readOnly />
+                                (Sin calificaciones)
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: 40 }}>
+                                <Typography variant="body1"><strong>Personaje:</strong></Typography>
+                                <Typography variant="body1">&nbsp;{amiibo.character}</Typography>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body1"><strong>Game Serie:</strong></Typography>
+                                <Typography variant="body1">&nbsp;{amiibo.gameSeries}</Typography>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body1"><strong>Amiibo Serie:</strong></Typography>
+                                <Typography variant="body1">&nbsp;{amiibo.amiiboSeries}</Typography>
+                            </div>
+                            <Typography
+                                variant="h6"
+                                className={classes.price}>
+                                <strong>{currencyFormatter.format(amiibo.price)}</strong>
+                            </Typography>
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: 20 }}>
+                                <TextField
+                                    className={classes.quantity}
+                                    label="Cantidad"
+                                    type="number"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    variant="outlined"
+                                    value={quantity}
+                                    size='small'
+                                    onChange={e => { setQuantity(e.target.value) }} />
+                                <Button variant="contained" color="secondary" onClick={e => handleAddToCart(e)}>
+                                    AGREGAR AL CARRO
+                                </Button>
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Paper>
         ) :
             amiiboState.isLoading ? <Loader /> :
                 amiiboState.ErrMess ? <Error msg={amiiboState.ErrMess} /> : null
