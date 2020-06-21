@@ -19,3 +19,12 @@ export const getTypes = _ => {
         url: baseUrlApi + path,
     });
 }
+
+export const getAmiibo = id => {
+    const path = `amiibo?id=${id}`;
+
+    return axios({
+        method: 'get',
+        url: baseUrlApi + path,
+    });
+}

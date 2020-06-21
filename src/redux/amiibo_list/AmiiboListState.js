@@ -6,7 +6,7 @@ const initialState =  {
     amiibos: []
 };
 
-export const AmiiboState = (state = initialState, action) => {
+export const AmiiboListState = (state = initialState, action) => {
     switch(action.type) {
         case ActionTypes.AMIIBO_FETCHED:
             return { ...state, isLoading: false, errMess: null, amiibos:action.payload };

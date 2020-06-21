@@ -55,12 +55,12 @@ const ItemList = props => {
     return (
         <Card className={classes.root}>
             <CardActionArea
-            // onClick={_ => {
-            //     props.history.push({
-            //         pathname: `user/${user.login.uuid}`,
-            //         state: user
-            //     })
-            // }}
+            onClick={_ => {
+                props.history.push({
+                    pathname: `amiibo/${amiibo.head}${amiibo.tail}`,
+                    state: amiibo
+                })
+            }}
             >
                 <div className={classes.details}>
                     <CardMedia
