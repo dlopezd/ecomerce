@@ -11,19 +11,11 @@ export const getAmiibos = _ => {
     });
 }
 
-export const getTypes = async _ => {
+export const getTypes = _ => {
     const path = 'type';
 
-    try {
-        let response = await axios({
-            method: 'get',
-            url: baseUrlApi + path,
-        });
-
-        return response.data;
-
-    } catch (error) {
-        let err = new Error("Error al obtener los tipos de amiibos.");
-        throw err;
-    }
+    return axios({
+        method: 'get',
+        url: baseUrlApi + path,
+    });
 }

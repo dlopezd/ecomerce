@@ -7,7 +7,10 @@ export const fetchType = () => (dispatch) => {
 	dispatch(typeLoading());
 
 	// return AmiiboClient.getTypes()
-	// 	.then(response => dispatch(typeFetch(response.data.amiibo)))
+	// 	.then(response => {
+	// 		dispatch(setTypeFilters(response.data.amiibo));
+	// 		dispatch(typeFetch(response.data.amiibo))
+	// 	})
 	// 	.catch(error => dispatch(typeFailed(error.message)));
 	dispatch(setTypeFilters(types));
 	dispatch(typeFetch(types));

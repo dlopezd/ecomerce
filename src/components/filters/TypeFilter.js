@@ -23,7 +23,10 @@ const TypeFilter = props => {
         props.handleTypeChanges(event.target.name, event.target.checked);
     };
 
+    const keys = Object.keys(props.typeOptions);
+
     return (
+        keys.length !== 0 &&
         <div className={classes.root}>
             <Typography id="range-slider" gutterBottom>
                 Tipo
@@ -31,7 +34,7 @@ const TypeFilter = props => {
             <FormControl component="fieldset" className={classes.formControl}>
                 <FormGroup>
                     {
-                        Object.keys(props.typeOptions).map(key => {
+                        keys.map(key => {
                             return (
                                 <FormControlLabel
                                     key={key}

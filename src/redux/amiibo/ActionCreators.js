@@ -6,7 +6,15 @@ export const fetchAmiibos = () => (dispatch) => {
 	dispatch(amiibosLoading());
 
 	// return AmiiboClient.getAmiibos()
-	// 	.then(response => dispatch(amiibosFetch(response.data.amiibo)))
+	// 	.then(response => {
+	// 		const amiibos = response.data.amiibo.map(a => {
+	// 			return ({
+	// 				...a,
+	// 				price: (Math.floor(Math.random() * (4501 - 1499)) + 1499) * 10
+	// 			})
+	// 		});
+	// 		dispatch(amiibosFetch(amiibos))
+	// 	})
 	// 	.catch(error => dispatch(amiibosFailed(error.message)));
 	const amiibos2 = amiibos.map(a => {
 		return ({

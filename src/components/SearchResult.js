@@ -53,9 +53,12 @@ class SearchResult extends React.Component {
         const incluAllTypes = Object.values(filterState.typeOptions).every(v => v == false);
         const typeFilters = incluAllTypes ? Object.keys(filterState.typeOptions) :
             Object.keys(filterState.typeOptions).filter(k => filterState.typeOptions[k]);
-
+        console.log(JSON.stringify(typeFilters))
+        
         // APLICANDO FILTROS POR TIPO
-        filteredResults = filteredResults.filter(a => typeFilters.some(t => a.type === t))
+        if (JSON.stringify(typeFilters) !== JSON.stringify([])) {
+            filteredResults = filteredResults.filter(a => typeFilters.some(t => a.type === t))
+        }
 
         // APLICANDO FILTRO POR PRECIO
         filteredResults = filteredResults.filter(a => a.price >= filterState.minPrice && a.price <= filterState.maxPrice)
