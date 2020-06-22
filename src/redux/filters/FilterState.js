@@ -3,7 +3,7 @@ import * as ActionTypes from './ActionTypes';
 const initialState =  {
     minPrice: 0,
     maxPrice: 50000,
-    typeOptions: [],
+    typeOptions: undefined,
     searchText: ''
 };
 
@@ -21,7 +21,7 @@ export const FilterState = (state = initialState, action) => {
             return newState;
         
         case ActionTypes.SET_SEARCH_TEXT:
-            return {...state, searchText: action.payload};
+            return {...initialState, searchText: action.payload};
 
         default:
             return state;

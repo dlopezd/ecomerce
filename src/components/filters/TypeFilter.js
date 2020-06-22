@@ -23,7 +23,7 @@ const TypeFilter = props => {
         props.handleTypeChanges(event.target.name, event.target.checked);
     };
 
-    const keys = Object.keys(props.typeOptions);
+    const keys = props.typeOptions ? Object.keys(props.typeOptions) : [];
 
     return (
         keys.length !== 0 &&

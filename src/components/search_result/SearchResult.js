@@ -1,5 +1,5 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -22,33 +22,31 @@ const styles = {
     }
 }
 
-class SearchResult extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            page: 1
-        };
-    }
+const SearchResult = props => {
+    const [page, setPage] = useState(1);
+    const dispatch = useDispatch();
+    const amiiboListState = useSelector(state => state.amiiboListState);
+    const filterState = useSelector(state => state.filterState);
 
-    componentDidMount() {
-        this.props.fetchAmiibos();
-        this.props.fetchType();
-    }
+    useEffect(() => {
+        if (!amiiboListState.amiibos) {
+            dispatch(fetchAmiibos())
+        }
+        if (!filterState.typeOptions)
+            dispatch(fetchType())
+    }, []);
 
-    render() {
-        const amiiboListState = this.props.amiiboListState;
-        const filterState = this.props.filterState;
+    // BUSQUEDA
+    let filteredResults = (amiiboListState.isLoading || amiiboListState.ErrMess || !amiiboListState.amiibos) ? [] :
+        !filterState.searchText ? amiiboListState.amiibos :
+            amiiboListState.amiibos.filter(a =>
+                a.name.toLowerCase().includes(filterState.searchText.toLowerCase()) ||
+                a.character.toLowerCase().includes(filterState.searchText.toLowerCase()) ||
+                a.amiiboSeries.toLowerCase().includes(filterState.searchText.toLowerCase()) ||
+                a.gameSeries.toLowerCase().includes(filterState.searchText.toLowerCase()));
 
-        // BUSQUEDA
-        let filteredResults = (amiiboListState.isLoading || amiiboListState.ErrMess) ? [] :
-            !filterState.searchText ? amiiboListState.amiibos :
-                amiiboListState.amiibos.filter(a =>
-                    a.name.includes(filterState.searchText) ||
-                    a.character.includes(filterState.searchText) ||
-                    a.amiiboSeries.includes(filterState.searchText) ||
-                    a.gameSeries.includes(filterState.searchText));
-
-        // DETERMINANDO FILTROS POR TIPO
+    // DETERMINANDO FILTROS POR TIPO
+    if (filterState.typeOptions) {
         const incluAllTypes = Object.values(filterState.typeOptions).every(v => v == false);
         const typeFilters = incluAllTypes ? Object.keys(filterState.typeOptions) :
             Object.keys(filterState.typeOptions).filter(k => filterState.typeOptions[k]);
@@ -57,39 +55,29 @@ class SearchResult extends React.Component {
         if (JSON.stringify(typeFilters) !== JSON.stringify([])) {
             filteredResults = filteredResults.filter(a => typeFilters.some(t => a.type === t))
         }
-
-        // APLICANDO FILTRO POR PRECIO
-        filteredResults = filteredResults.filter(a => a.price >= filterState.minPrice && a.price <= filterState.maxPrice)
-
-        return (
-            amiiboListState.isLoading ? <Loader /> :
-                amiiboListState.ErrMess ? <Error msg={amiiboListState.ErrMess} /> :
-                    <Container style={styles.container}>
-                        <Grid container style={styles.filters} spacing={2}>
-                            <Grid item >
-                                <Filters />
-                            </Grid>
-                        </Grid>
-                        <Grid container style={{ flexGrow: 1 }} spacing={2}>
-                            <Grid item >
-                                <Content
-                                    page={this.state.page}
-                                    amiibos={filteredResults} />
-                            </Grid>
-                        </Grid>
-                    </Container>
-        );
     }
+
+    // APLICANDO FILTRO POR PRECIO
+    filteredResults = filteredResults.filter(a => a.price >= filterState.minPrice && a.price <= filterState.maxPrice)
+
+    return (
+        amiiboListState.isLoading ? <Loader /> :
+            amiiboListState.ErrMess ? <Error msg={amiiboListState.ErrMess} /> :
+                <Container style={styles.container}>
+                    <Grid container style={styles.filters} spacing={2}>
+                        <Grid item >
+                            <Filters />
+                        </Grid>
+                    </Grid>
+                    <Grid container style={{ flexGrow: 1 }} spacing={2}>
+                        <Grid item >
+                            <Content
+                                page={page}
+                                amiibos={filteredResults} />
+                        </Grid>
+                    </Grid>
+                </Container>
+    );
 }
 
-const mapStateToProps = state => ({
-    amiiboListState: state.amiiboListState,
-    filterState: state.filterState
-});
-
-const mapDispatchToProps = dispatch => ({
-    fetchAmiibos: _ => dispatch(fetchAmiibos()),
-    fetchType: _ => dispatch(fetchType())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResult);
+export default SearchResult;

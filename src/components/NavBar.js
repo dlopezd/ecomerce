@@ -147,9 +147,11 @@ const NavBar = props => {
         event.preventDefault();
         const value = event.target.value;
         setSearchTextInput(value);
-        if (value.length >= 4) {
-            dispatch(setSearchText(value));
-        }
+        dispatch(setSearchText(value));
+        props.history.push({
+            pathname: '/',
+        });
+
     }
 
     const quantityItems = Object.values(ShoppingCartState.items).reduce((sum, item) => { return sum + parseInt(item.quantity) }, 0);

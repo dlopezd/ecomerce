@@ -1,5 +1,4 @@
 import * as ActionTypes from './ActionTypes';
-import * as AmiiboClient from '../../restServices/amiiboApiClient'
 
 export const setMinMaxFilters = (data) => (dispatch) => {
 	dispatch(setMinMaxState(data));
@@ -20,7 +19,6 @@ export const updateTypeFilters = (key, value) => (dispatch) => {
 export const setSearchText = searchText => dispatch => {
 	dispatch(setSearchTextState(searchText));
 } 
-
 
 
 const setMinMaxState = data => ({

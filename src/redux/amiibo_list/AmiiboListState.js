@@ -3,7 +3,7 @@ import * as ActionTypes from './ActionTypes';
 const initialState =  {
     isLoading: false,
     errMess: null,
-    amiibos: []
+    amiibos: undefined
 };
 
 export const AmiiboListState = (state = initialState, action) => {
