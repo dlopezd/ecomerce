@@ -18,11 +18,12 @@ import Drawer from '@material-ui/core/Drawer';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ShoppingCart from './shopping_cart/ShoppingCart';
 
 
 const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
-    cartTitle:{
+    cartTitle: {
         marginLeft: 10
     },
     appBar: {
@@ -53,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: 'space-between',
     },
@@ -199,6 +199,10 @@ const NavBar = props => {
                     paper: classes.drawerPaper,
                 }}>
                 <div className={classes.drawerHeader}>
+                    <IconButton
+                        color="inherit">
+                        <ShoppingCartIcon />
+                    </IconButton>
                     <Typography variant="h6" className={classes.cartTitle}>
                         Carrito de Compras
                     </Typography>
@@ -207,6 +211,7 @@ const NavBar = props => {
                     </IconButton>
                 </div>
                 <Divider />
+                <ShoppingCart />
             </Drawer>
         </>
     );

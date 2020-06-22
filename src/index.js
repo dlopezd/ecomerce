@@ -9,13 +9,11 @@ import * as serviceWorker from './serviceWorker';
 import { ConfigureStore } from './redux/configureStore';
 
 ReactDOM.render(
-  <React.StrictMode>
     <Provider store={ConfigureStore()}>
       <BrowserRouter>
           <App />
       </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
   document.getElementById('root')
 );
 
