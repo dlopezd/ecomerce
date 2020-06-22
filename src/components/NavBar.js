@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+        cursor: 'pointer'
     },
     search: {
         position: 'relative',
@@ -143,6 +144,13 @@ const NavBar = props => {
         setOpen(false);
     };
 
+    const handleGoHome = (event) => {
+        event.preventDefault();
+        props.history.push({
+            pathname: '/',
+        });
+    }
+
     const handleSearchChange = (event) => {
         event.preventDefault();
         const value = event.target.value;
@@ -160,9 +168,12 @@ const NavBar = props => {
         <>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
+                    <Typography
+                        variant="h6"
+                        className={classes.title}
+                        onClick={event => handleGoHome(event)}>
                         Amiibos
-                </Typography>
+                    </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon />

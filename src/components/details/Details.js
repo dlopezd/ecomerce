@@ -66,6 +66,12 @@ const Details = props => {
         dispatch(addItemCart({...amiibo, quantity: quantity}))
     }
 
+    const handleShopping = (event) => {
+        event.preventDefault();
+        props.history.push({ pathname: '/' })
+    }
+
+
     !amiibo && props.history.location.state &&
         setAmiibo(props.history.location.state);
 
@@ -116,6 +122,10 @@ const Details = props => {
                                     AGREGAR AL CARRO
                                 </Button>
                             </div>
+                            <Button style={{ marginTop: 10 }}
+                                onClick={e => handleShopping(e)} >
+                                SEGUIR COMPRANDO
+                            </Button>
                         </Grid>
                     </Grid>
                 </Container>

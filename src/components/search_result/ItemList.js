@@ -1,28 +1,34 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom'
+import  { useDispatch } from 'react-redux'
 
 import { currencyFormatter } from '../../Utils/Utils'
+import { addItemCart } from '../../redux/shopping_cart/ActionCreators';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        width: 180,
+        width: 200,
         margin: 8,
-        padding: 8
-    },
-    details: {
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between'
+    },
+    info: {
+        padding: 10,
     },
     content: {
-        padding: '16px 0 0 0'
+        padding: 0,
+        paddingTop: 16,
+        paddingBottom: '0px',
     },
     cover: {
         height: 180,
@@ -30,13 +36,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundSize: 'contain'
     },
     button: {
-        paddingTop: 0,
-        paddingBottom: 0
+        paddingBottom: 15
     },
     title: {
         fontSize: '16px',
         lineHeight: '18px',
-        fontStyle: 'bold'
     },
     subtitle: {
         fontSize: '13px',
@@ -51,36 +55,49 @@ const useStyles = makeStyles((theme) => ({
 const ItemList = props => {
     const classes = useStyles();
     const amiibo = props.amiibo;
+    const dispatch = useDispatch();
+
+    const handleAddToCart = event => {
+        event.preventDefault();
+        dispatch(addItemCart({...amiibo, quantity: 1}))
+    }
 
     return (
         <Card className={classes.root}>
             <CardActionArea
-            onClick={_ => {
-                props.history.push({
-                    pathname: `amiibo/${amiibo.head}${amiibo.tail}`,
-                    state: amiibo
-                })
-            }}
-            >
-                <div className={classes.details}>
-                    <CardMedia
-                        className={classes.cover}
-                        image={amiibo.image}
-                        title="picture"
-                    />
-                    <CardContent className={classes.content}>
-                        <Typography className={classes.title}>
-                            <strong>{amiibo.name}</strong>
-                        </Typography>
-                        <Typography className={classes.subtitle}>
-                            {amiibo.type}
-                        </Typography>
-                        <Typography className={classes.price}>
-                            <strong>{currencyFormatter.format(amiibo.price)}</strong>
-                        </Typography>
-                    </CardContent>
+                className={classes.info}
+                onClick={_ => {
+                    props.history.push({
+                        pathname: `amiibo/${amiibo.head}${amiibo.tail}`,
+                        state: amiibo
+                    })
+                }} >
+                <CardMedia
+                    className={classes.cover}
+                    image={amiibo.image}
+                    title="picture"
+                />
+                <div className={classes.content}>
+                    <Typography className={classes.title}>
+                        <strong>{amiibo.name}</strong>
+                    </Typography>
+                    <Typography className={classes.subtitle}>
+                        {amiibo.type}
+                    </Typography>
+                    <Typography className={classes.price}>
+                        <strong>{currencyFormatter.format(amiibo.price)}</strong>
+                    </Typography>
                 </div>
             </CardActionArea>
+            <Button
+                color="primary"
+                size="small"
+                className={classes.button}
+                startIcon={<AddShoppingCartIcon />}
+                onClick={event => handleAddToCart(event)}
+            >
+                Añadir al carro
+      </Button>
         </Card>
     );
 }
