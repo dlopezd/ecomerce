@@ -21,7 +21,11 @@ export const FilterState = (state = initialState, action) => {
             return newState;
         
         case ActionTypes.SET_SEARCH_TEXT:
-            return {...initialState, searchText: action.payload};
+            let types = {...state.typeOptions};
+            Object.keys(types).forEach( k => {
+                types[k] = false;
+            });
+            return {...initialState, searchText: action.payload, typeOptions: types};
 
         default:
             return state;

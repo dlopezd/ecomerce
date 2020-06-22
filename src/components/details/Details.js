@@ -73,9 +73,9 @@ const Details = props => {
         amiibo ? (
             <Paper elevation={0} className={classes.paper}>
                 <Container className={classes.container}>
-                    <Grid container style={{ flexGrow: 1 }} spacing={2}>
+                    <Grid container style={{ flexGrow: 1, width:'100%' }} spacing={2}>
                         <Grid item className={classes.image} style={{ flexGrow: 1 }}>
-                            <img width="200" src={amiibo.image} />
+                            <img height="280" src={amiibo.image} />
                         </Grid>
                         <Grid item style={{ flexGrow: 1 }}>
                             <Typography variant="h6">{amiibo.name}</Typography>

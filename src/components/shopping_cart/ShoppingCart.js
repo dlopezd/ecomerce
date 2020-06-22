@@ -7,7 +7,9 @@ import ShoppingCartItem from './ShoppingCartItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
+
 import { currencyFormatter } from '../../Utils/Utils';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -35,6 +37,11 @@ const ShoppingCart = props => {
         return  sum + item.quantity * item.price
     }, 0)
 
+    const handleBuyClick = event => {
+        event.preventDefault();
+        props.history.push({ pathname:'/checkout'})
+    }
+
     return (
         <Container className={classes.container}>
             <Grid container className={classes.pannel}>
@@ -60,7 +67,8 @@ const ShoppingCart = props => {
                     </div>
                     <Button style={{ width: '60%', marginTop: 10 }}
                         variant="contained"
-                        color="secondary" >
+                        color="secondary"
+                        onClick={e => handleBuyClick(e)} >
                         PAGAR
                     </Button>
                 </Grid>
@@ -69,4 +77,4 @@ const ShoppingCart = props => {
     );
 }
 
-export default ShoppingCart;
+export default withRouter(ShoppingCart);
