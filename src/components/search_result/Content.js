@@ -31,7 +31,6 @@ const Content = props => {
     const [page, setPage] = useState(1);
     const [orderBy, setOrderBy] = useState('name-asc');
 
-
     useEffect(() => {
         var currentPage = props.page ? props.page : 1;
         setPage(currentPage);

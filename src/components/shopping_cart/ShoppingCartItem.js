@@ -9,31 +9,42 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { currencyFormatter } from '../../Utils/Utils'
 import { updateItemCart, removeItemCart } from '../../redux/shopping_cart/ActionCreators'
+import { Divider } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
     item: {
         display: 'flex',
-        flexFlow: 'row nowrap',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop:5,
-        marginBottom:5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 10,
+        paddingBottom: 10,
+        width: '100%'
     },
     details: {
         display: 'flex wrap',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        height: '100%',
+        alignItems: 'center',
+        marginLeft: 15,
+        marginRight:15
     },
     actions: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         height: '100%',
+        width: 75
     },
     quantity: {
-        maxWidth: '80px'
+        maxWidth: '80px',
+        marginTop: 10,
+    },
+    lefthalf: {
+        display: 'flex',
+        flexFlow: 'row nowrap',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     remove: {
         fontSize: 11,
@@ -57,22 +68,24 @@ const ShoppingCartItem = props => {
     }
 
     return (
-        <Grid container className={classes.item} spacing={2}>
-            <Grid item>
-                <img width="60" src={amiibo.image} />
-            </Grid>
-            <Grid item className={classes.details}>
-                <Typography variant="button" display="block" gutterBottom>
-                    <strong>{amiibo.name}</strong>
-                </Typography>
-                <span style={{ fontSize: 11 }}>
-                    PRECIO UNIDAD
+        <div className={classes.item}>
+            <div className={classes.lefthalf}>
+                <div>
+                    <img width="40" src={amiibo.image} />
+                </div>
+                <div className={classes.details}>
+                    <Typography variant="button" display="block" gutterBottom>
+                        <strong>{amiibo.name}</strong>
+                    </Typography>
+                    <span style={{ fontSize: 11 }}>
+                        PRECIO UNIDAD
                     </span>
-                <Typography variant="body1" color="secondary">
-                    <strong>{currencyFormatter.format(amiibo.price)}</strong>
-                </Typography>
-            </Grid>
-            <Grid item className={classes.actions}>
+                    <Typography variant="body1" color="secondary">
+                        <strong>{currencyFormatter.format(amiibo.price)}</strong>
+                    </Typography>
+                </div>
+            </div>
+            <div className={classes.actions}>
                 <TextField
                     className={classes.quantity}
                     label="Cantidad"
@@ -90,8 +103,8 @@ const ShoppingCartItem = props => {
                     onClick={e => handleRemoveItem(e)}>
                     Eliminar
                     </Button>
-            </Grid>
-        </Grid>
+            </div>
+        </div>
     );
 }
 

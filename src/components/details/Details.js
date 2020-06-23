@@ -10,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import Error from '../Error'
 import Loader from '../Loader'
@@ -17,6 +19,9 @@ import { fetchAmiibo } from '../../redux/amiibo_detail/ActionCreators'
 import { addItemCart } from '../../redux/shopping_cart/ActionCreators'
 import { currencyFormatter } from '../../Utils/Utils'
 
+const Alert = (props) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -47,6 +52,19 @@ const Details = props => {
     const [quantity, setQuantity] = useState(1);
     const amiiboState = useSelector(state => state.amiiboDetailState);
     const dispatch = useDispatch();
+    const [open, setOpen] = React.useState(false);
+
+    const handleShowAlert = () => {
+        setOpen(true);
+    };
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     useEffect(() => {
         if (!props.history.location.state) {
@@ -63,7 +81,8 @@ const Details = props => {
 
     const handleAddToCart = event => {
         event.preventDefault();
-        dispatch(addItemCart({...amiibo, quantity: quantity}))
+        dispatch(addItemCart({ ...amiibo, quantity: quantity }));
+        handleShowAlert();
     }
 
     const handleShopping = (event) => {
@@ -79,7 +98,7 @@ const Details = props => {
         amiibo ? (
             <Paper elevation={0} className={classes.paper}>
                 <Container className={classes.container}>
-                    <Grid container style={{ flexGrow: 1, width:'100%' }} spacing={2}>
+                    <Grid container style={{ flexGrow: 1, width: '100%' }} spacing={2}>
                         <Grid item className={classes.image} style={{ flexGrow: 1 }}>
                             <img height="280" src={amiibo.image} />
                         </Grid>
@@ -129,6 +148,11 @@ const Details = props => {
                         </Grid>
                     </Grid>
                 </Container>
+                <Snackbar open={open} autoHideDuration={1500} onClose={handleCloseAlert}>
+                    <Alert onClose={handleCloseAlert} severity="success">
+                        El producto fue agregado al carro.
+                </Alert>
+                </Snackbar>
             </Paper>
         ) :
             amiiboState.isLoading ? <Loader /> :
